@@ -34,5 +34,8 @@ angular.module('myApp', [
       .when('/forms', {
           template: '<todo-list></todo-list>'
       })
+      .when('/validation', {
+          template: '<form-validation></form-validation>'
+      })
       .otherwise({redirectTo: '/dashboard'});
 }]);

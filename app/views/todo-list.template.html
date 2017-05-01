@@ -1,9 +1,9 @@
 <div id="todoPanel" class="panel">
   <h3 class="panel-header">
     To Do List
-<span class="label label-info">
-{{ ($ctrl.todos | filter: {complete: 'false'}).length}}
-</span>
+    <span class="label label-info">
+    {{ ($ctrl.todos | filter: {complete: 'false'}).length}}
+    </span>
   </h3>
 
   <div class="row">
@@ -11,8 +11,7 @@
       <div class="well">
         <div class="form-group row">
           <label for="actionText">Action:</label>
-          <input id="actionText" class="form-control"
-                 ng-model="newTodo.action">
+          <input id="actionText" class="form-control" ng-model="newTodo.action">
         </div>
         <div class="form-group row">
           <label for="actionLocation">Location:</label>
@@ -22,14 +21,11 @@
             <option>Mall</option>
           </select>
         </div>
-        <button class="btn btn-primary btn-block"
-                ng-click="addNewItem(newTodo)">
+        <button class="btn btn-primary btn-block" ng-click="$ctrl.addNewItem(newTodo)">
           Add
         </button>
       </div>
     </div>
-
-
 
     <div class="col-xs-6">
       <table class="table">
