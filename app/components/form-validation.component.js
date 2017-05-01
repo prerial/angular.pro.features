@@ -2,7 +2,7 @@
  * Created by Mikhail on 4/16/2017.
  */
 'use strict';
-function formValidationController(/*$scope, sessionStorage, localStorage, heroService*/) {
+function formValidationController($scope/*, sessionStorage, localStorage, heroService*/) {
     var self = this;
     this.todos = [
         { action: "Get groceries", complete: false },
@@ -22,6 +22,15 @@ function formValidationController(/*$scope, sessionStorage, localStorage, heroSe
 
         }
     };
+    this.getError = function (error) {
+        if (angular.isDefined(error)) {
+            if (error.required) {
+                return "JS: Please enter a value";
+            } else if (error.email) {
+                return "Please enter a valid email address";
+            }
+        }
+    }
 }
 
 formValidationController.$inject = ['$scope', 'sessionStorage','localStorage','heroService'];
