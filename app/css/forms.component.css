@@ -1,3 +1,12 @@
+#todoPanel {
+    margin: 0 1em;
+    overflow:hidden;
+}
 #todoPanel > h3 {
     text-align: left; margin:  1em 0 1em 1em;
 }
+label {
+    white-space: nowrap;
+}
+
+

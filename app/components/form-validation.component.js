@@ -2,7 +2,7 @@
  * Created by Mikhail on 4/16/2017.
  */
 'use strict';
-function todoListController(/*$scope, sessionStorage, localStorage, heroService*/) {
+function formValidationController(/*$scope, sessionStorage, localStorage, heroService*/) {
     var self = this;
     this.todos = [
         { action: "Get groceries", complete: false },
@@ -24,10 +24,10 @@ function todoListController(/*$scope, sessionStorage, localStorage, heroService*
     };
 }
 
-todoListController.$inject = ['$scope', 'sessionStorage','localStorage','heroService'];
+formValidationController.$inject = ['$scope', 'sessionStorage','localStorage','heroService'];
 
 angular.module('forms')
-    .component('todoList', {
-        templateUrl: 'views/todo-list.template.html',
-        controller: todoListController
+    .component('formValidation', {
+        templateUrl: 'views/form-validation.template.html',
+        controller: formValidationController
     });

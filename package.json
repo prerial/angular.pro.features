@@ -24,6 +24,7 @@
 
     "prestart": "npm install",
     "start": "http-server -a localhost -p 3000 -c-1 ./app",
+    "localhost": "http-server -a localhost -p 3000 -c-1 ./app",
 
     "pretest": "npm install",
     "test": "karma start karma.conf.js",
