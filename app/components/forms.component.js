@@ -31,3 +31,29 @@ angular.module('forms')
         templateUrl: 'views/todo-list.template.html',
         controller: todoListController
     });
+
+function bindingListController($scope/*, sessionStorage, localStorage, heroService*/) {
+    $scope.master = {};
+
+    $scope.update = function(user) {
+        $scope.master = angular.copy(user);
+    };
+
+    $scope.reset = function(form) {
+        if (form) {
+            form.$setPristine();
+            form.$setUntouched();
+        }
+        $scope.user = {};//angular.copy($scope.master);
+        $scope.update({})
+    };
+
+    $scope.reset();
+}
+bindingListController.$inject = ['$scope', 'sessionStorage','localStorage','heroService'];
+
+angular.module('forms')
+    .component('bindingList', {
+        templateUrl: 'views/binding-list.template.html',
+        controller: bindingListController
+    });
