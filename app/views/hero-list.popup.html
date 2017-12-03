@@ -1,0 +1,212 @@
+<script>
+self.selected = undefined;
+self.states = ['Alabama', 'Alaska', 'Arizona', 'Arkansas', 'California', 'Colorado', 'Connecticut', 'Delaware', 'Florida', 'Georgia', 'Hawaii', 'Idaho', 'Illinois', 'Indiana', 'Iowa', 'Kansas', 'Kentucky', 'Louisiana', 'Maine', 'Maryland', 'Massachusetts', 'Michigan', 'Minnesota', 'Mississippi', 'Missouri', 'Montana', 'Nebraska', 'Nevada', 'New Hampshire', 'New Jersey', 'New Mexico', 'New York', 'North Dakota', 'North Carolina', 'Ohio', 'Oklahoma', 'Oregon', 'Pennsylvania', 'Rhode Island', 'South Carolina', 'South Dakota', 'Tennessee', 'Texas', 'Utah', 'Vermont', 'Virginia', 'Washington', 'West Virginia', 'Wisconsin', 'Wyoming'];
+self.heroes = [{'id':'1', 'name':'Alabama'}, {'id':'2', 'name':'Alaska'}, {'id':'3', 'name':'Arizona'}, {'id':'4', 'name':'ArkansasArkansasArkansasArkansasArkansasArkansasArkansas'}, {'id':'5', 'name':'California'}, {'id':'6', 'name':'Colorado'}];
+</script>
+<div class="container container-view">
+    <div class="row">
+        <div class="col-md-14">
+            <div class="row">
+                <div class="col-md-6">
+                    <h3 class="col-sm-offset-4">Reverse Engineering</h3>
+                    <form name="sourceSchemaForm" novalidate class="form-horizontal" ng-submit="$ctrl.submitForm(source)">
+
+                        <div class="form-group">
+                            <label class="control-label col-sm-4" for="source_include" style="white-space:nowrap">Data Source:</label>
+                            <div class="col-sm-8">
+                                <select ng-model="source.schema_include" class="form-control" id="source_include" name="source_include" placeholder="Please select source" ng-required="true" required>
+                                    <option value="" disabled selected>Please select Data Source</option>
+                                    <option ng-repeat="option in $ctrl.datasource.dataSource" value="{{option.conn_name}}">{{option.conn_name}}</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="control-label col-sm-4" for="target" style="white-space:nowrap">Data Model Type:</label>
+                            <div class="col-sm-8">
+                                <select ng-model="source.schema_target"
+                                        class="form-control" id="target" ng-required="true" required>
+                                    <option value="" disabled selected>Please select Database</option>
+                                    <option ng-repeat="option in $ctrl.datasource.dataModelType" value="{{option.name}}">{{option.name}}</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="control-label col-sm-4" for="sdatabase">Source Database:</label>
+                            <div class="col-sm-8">
+                                <select ng-model="source.sdatabase"
+                                        class="form-control" id="sdatabase" ng-required="true" required>
+                                    <option value="" disabled selected>Please select Source Database</option>
+                                    <option ng-repeat="option in $ctrl.datasource.databaseSource" value="{{option.name}}">{{option.name}}</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="control-label col-sm-4" for="tdatabase">Target Database:</label>
+                            <div class="col-sm-8">
+                                <select ng-model="source.tdatabase"
+                                        class="form-control" name="tdatabase" id="tdatabase" ng-required="true" required>
+                                    <option value="" disabled selected>Please select Target Database</option>
+                                    <option ng-repeat="option in $ctrl.datasource.databaseTarget" value="{{option.name}}">{{option.name}}</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div ng-if="source.tdatabase == 'Hive'" class="form-group">
+                            <label class="control-label col-sm-4" for="table-type">Table Type:</label>
+                            <div class="col-sm-8">
+                                <select ng-model="source.table_type"
+                                        class="form-control" name="table-type" id="table-type" ng-required="true" required>
+                                    <option value="" disabled selected>Please select Table Type</option>
+                                    <option>Managed Table</option>
+                                    <option>External Table</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div ng-if="source.table_type == 'External Table'" class="form-group">
+                            <label class="control-label col-sm-4" for="location">Location:</label>
+                            <div class="col-sm-8">
+                                <select ng-model="source.location" ng-init="source.location = '/tenants/hacl/hive/db_hacl_scma2'"
+                                        class="form-control" name="location" id="location">
+                                    <option>/tenants/hacl/hive/db_hacl_scma2</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div ng-if="source.tdatabase == 'Hive'" class="form-group">
+                            <label class="control-label col-sm-4" for="table-file-format">Table File Format:</label>
+                            <div class="col-sm-8">
+                                <select ng-model="source.table_file_format"
+                                        class="form-control" name="table-file-format" id="table-file-format" ng-required="true" required>
+                                    <option value="" disabled selected>Please select Table File Format</option>
+                                    <option>Text</option>
+                                    <option>Parquet</option>
+                                    <option>Avro</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div ng-if="source.tdatabase == 'Hive'" class="form-group">
+                            <label class="control-label col-sm-4" for="database-schema">Database Schema:</label>
+                            <div class="col-sm-8">
+                                <select ng-model="source.database_schema"
+                                        class="form-control" name="database-schema" id="database-schema" ng-required="true" required>
+                                    <option value="" disabled selected>Please select Database Schema</option>
+                                    <option>db_hacl_scma4</option>
+                                    <option>default</option>
+                                </select>
+                            </div>
+                        </div>
+
+
+                        <div class="form-group">
+                            <div class="col-sm-offset-4 col-sm-8">
+                                <div class="checkbox">
+                                    <label><input ng-model="source.single"
+                                                  ng-true-value="true" ng-false-value="false"
+                                                  type="checkbox" value="false" name="single">Single Step Denormalization</label>
+                                    <button style="float:right" ng-if="source.single" data-toggle="modal" data-target="#singleStepModal" type="button" class="btn btn-xs btn-primary">Select Tables</button>
+                                </div>
+                            </div>
+                        </div>
+                        <div ng-if="source.single">
+                            <div class="form-group">
+                                <label class="control-label col-sm-4" for="anchor">Anchors:</label>
+                                <div class="col-sm-8">
+                                    <input ng-model="source.anchors" class="form-control" id="anchor" placeholder="Enter list of Anchor tables" name="anchor">
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label class="control-label col-sm-4" for="tbl_incl" style="white-space:nowrap">Include Tables:</label>
+                                <div class="col-sm-8">
+                                    <input ng-model="source.tables_include" class="form-control" id="tbl_incl" placeholder="Enter list of tables to include" name="tbl_incl">
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label class="control-label col-sm-4" for="tbl_excl" style="white-space:nowrap">Exclude Tables:</label>
+                                <div class="col-sm-8">
+                                    <input ng-model="source.tables_exclude" class="form-control" id="tbl_excl" placeholder="Enter list of tables to exclude" name="tbl_excl">
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <div class="col-sm-offset-4 col-sm-8">
+                                <button ng-disabled="!sourceSchemaForm.$valid" type="submit" class="btn btn-primary">Submit</button>
+                                <button type="button" class="btn btn-primary btn-linked"><a href="#/connections">Close</a></button>
+                            </div>
+                        </div>
+                        <!--                <pre>source = {{source | json}}</pre> -->
+
+                    </form>
+
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Modal - Manage Connections-->
+<div class="modal fade" id="singleStepModal" role="dialog">
+    <div class="modal-dialog">
+
+        <!-- Modal content-->
+        <div class="modal-content" >
+
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal">&times;</button>
+                <h4 class="modal-title">Single Step Denormalization</h4>
+            </div>
+
+            <form name="connectionForm" novalidate class="form-horizontal">
+
+
+                <div class="modal-body">
+
+                    <div style="margin:8px;">
+                        <label style="margin-right:12px">Select Type: </label>
+                        <label style="margin-right:8px;font-weight:500;"><input style="background-color:rgb(255,153,153);" type="radio" ng-model="$ctrl.anchoroot.type" value="anchor">
+                            Anchor</label>
+                        <label style="margin-right:8px;font-weight:500;"><input style="background-color:rgb(144, 238, 144);" type="radio" ng-model="$ctrl.anchoroot.type" value="include">
+
+                            Include</label>
+                        <label style="margin-right:8px;font-weight:500;"><input style="background-color:rgb(176, 196, 222);" type="radio" ng-model="$ctrl.anchoroot.type" value="exclude">
+                            Exclude</label>
+                    </div>
+
+                    <hr>
+
+                    <div style="padding:0 60px;border:0px solid red">
+
+                        <div class="form-group">
+                            <div class="col-sm-7" style="margin-right:0;padding-right:0">
+                                <input type="text" ng-model="$ctrl.selected" uib-typeahead="state for state in $ctrl.states | filter:$viewValue | limitTo:8" class="form-control">
+                            </div>
+                            <div class="col-sm-5" style="margin-left:0;padding-left:2px">
+                                <button type="button" class="btn btn-primary">Add</button>
+                            </div>
+                        </div>
+                        <div class="form-group" style="height:200px;overflow:auto;">
+                            <div class="col-sm-12">
+                                <ul class="heroes" style="width:100%">
+                                    <li style="text-overflow: ellipsis" ng-repeat="hero in $ctrl.heroes" ng-class="{selected: hero === $ctrl.selectedHero}" ng-click="$ctrl.onSelect(hero)">
+                                        <div class="badge">{{hero.id}}</div><div class="text" style="text-overflow: ellipsis"><div style="width:50%">{{hero.name}}</div></div>
+                                        <button class="delete"  ng-click="$ctrl.delete(hero); $event.stopPropagation()">x</button>
+                                    </li>
+                                </ul>
+
+                            </div>
+                        </div>
+                    </div>
+
+                </div> <!--/body-->
+
+                <div class="modal-footer">
+                    <div style="margin-right:50px">
+                        <button type="button"  class="btn btn-primary">Select</button>
+                        <button type="button" ng-click="" class="btn btn-primary" data-dismiss="modal">Close</button>
+                    </div>
+                </div>
+
+            </form>
+
+        </div>
+    </div>
+</div>
+<!--- End Modal -->
